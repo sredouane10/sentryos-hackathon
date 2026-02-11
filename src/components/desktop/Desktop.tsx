@@ -62,6 +62,7 @@ function DesktopContent() {
   const openInstallGuide = () => {
     // Capture error in Sentry for testing observability
     const error = new Error('Install Guide button clicked - testing Sentry integration')
+    console.error('Sentry test event:', error)
     Sentry.captureException(error, {
       tags: {
         action: 'install-guide-click',
