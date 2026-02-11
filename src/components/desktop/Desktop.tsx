@@ -8,6 +8,7 @@ import { Notepad } from './apps/Notepad'
 import { FolderView, FolderItem } from './apps/FolderView'
 import { Chat } from './apps/Chat'
 import { useState } from 'react'
+import * as Sentry from '@sentry/nextjs'
 
 const INSTALL_GUIDE_CONTENT = `# SentryOS Install Guide
 
@@ -59,6 +60,16 @@ function DesktopContent() {
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null)
 
   const openInstallGuide = () => {
+    // Capture error in Sentry for testing observability
+    const error = new Error('Install Guide button clicked - testing Sentry integration')
+    Sentry.captureException(error, {
+      tags: {
+        action: 'install-guide-click',
+        component: 'Desktop'
+      },
+      level: 'info'
+    })
+
     openWindow({
       id: 'install-guide',
       title: 'Install Guide.md',
